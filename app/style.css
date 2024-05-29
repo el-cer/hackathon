@@ -1,0 +1,18 @@
+div.row-widget{
+    border: none;
+    outline: none;    
+}
+
+.st-bb{
+    border: 1px solid black;
+    border-radius: 12px;
+}
+
+.st-bb:focus{
+    border: 1px solid #47EBAF;
+    border-radius: 12px;
+}
+
+section.main{
+    background-color: #f7f7f7;
+}
