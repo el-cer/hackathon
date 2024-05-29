@@ -15,14 +15,18 @@ st.title('Recommandations par client')
 user = model_reco_v2.Users()
 list_of_user = user.get_data()
 
+list_of_model_version = ["V1", "V2"]
+
+model_input = st.selectbox("", options=list_of_model_version)
 # input tu mets la list dans la selectbox
 text_input = st.selectbox("", options=list_of_user)
 
 # Afficher les entrées
 st.write('produits recommandé pour l\'utilisateur ', text_input)
-
-model = model_reco_v2.Model(text_input)
-
+if model_input=='V1':
+    model = model_reco_v1.Model(text_input)
+else:
+    model = model_reco_v2.Model(text_input)
 # Get recommendations
 Recommend, list_product_recommended = model.get_recommendation()
 
