@@ -2,7 +2,16 @@ import streamlit as st
 
 import model_reco_v1 
 import model_reco_v2
+from matrix_preparation import Dataprep
 # Style
+user = model_reco_v2.Users()
+list_of_user = user.get_data()
+
+mp = Dataprep()
+data_filtered_last_purchase, main_df= mp.data_preparation()
+pivot_table = mp.dimensionality_reduction()
+correlation_matrix = mp.correlation_matrix()
+
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
@@ -12,8 +21,7 @@ st.title('Recommandations par client')
 # Titre de l'application
 
 # ajoute les users, tu peux mettre une liste ou un df 
-user = model_reco_v2.Users()
-list_of_user = user.get_data()
+
 
 list_of_model_version = ["V1", "V2"]
 
@@ -24,9 +32,9 @@ text_input = st.selectbox("", options=list_of_user)
 # Afficher les entrées
 st.write('produits recommandé pour l\'utilisateur ', text_input)
 if model_input=='V1':
-    model = model_reco_v1.Model(text_input)
+    model = model_reco_v1.Model(text_input,data_filtered_last_purchase, main_df, pivot_table, correlation_matrix)
 else:
-    model = model_reco_v2.Model(text_input)
+    model = model_reco_v2.Model(text_input,data_filtered_last_purchase, main_df, pivot_table, correlation_matrix)
 # Get recommendations
 Recommend, list_product_recommended = model.get_recommendation()
 

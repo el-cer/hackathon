@@ -6,6 +6,7 @@ from sklearn.decomposition import PCA
 class Users:
     def __init__(self):
         self.reco_df = pd.read_csv('datasetreco.csv',sep=';')
+        
     def get_data(self):
         self.main_df = self.reco_df[self.reco_df['user_purchases']>=1]
         self.main_df.drop_duplicates(inplace=True)
@@ -15,41 +16,13 @@ class Users:
 
 
 class Model:
-    def __init__(self,user_id):
+    def __init__(self,user_id,data_filtered_last_purchase, main_df, pivot_table, correlation_matrix):
         self.reco_df = pd.read_csv('datasetreco.csv',sep=';')
         self.user_id = int(user_id)
-        self.data_preparation()
+        self.data_filtered_last_purchase, self.main_df, self.pivot_data, self.correlation_matrix = data_filtered_last_purchase, main_df, pivot_table, correlation_matrix
+
     
-    def data_preparation(self):
 
-        
-        
-        self.reco_df["score"]=self.reco_df["p_views"]+(self.reco_df["p_carts"]*5)+(self.reco_df["p_purchases"]*10)
-
-        main = self.reco_df.groupby('category').max('score')[['score']].reset_index()
-
-        self.main_df = self.reco_df.merge(main,on=['category'])
-        self.main_df['score_norm'] = self.main_df['score_x']/self.main_df['score_y']
-
-        self.main_df = self.main_df[self.main_df['user_purchases']>=1]
-        self.main_df.drop_duplicates(inplace=True)
-
-
-        self.dimensionality_reduction()
-
-    def dimensionality_reduction(self):
-        self.pivot_data=pd.pivot_table(self.main_df, values='score_norm', index=['product_id'],
-                       columns=['user_id'],fill_value=0)
-        svd = TruncatedSVD(n_components=5, n_iter=7, random_state=42)
-
-        self.decomposed_matrix= svd.fit_transform(self.pivot_data)
-
-        self.correlation_matrix()
-    def correlation_matrix(self):
-        self.correlation_matrix = np.corrcoef(self.decomposed_matrix)
-
-        self.get_recommendation() 
-    
     def get_recommendation_score(self,product_ID):
 
         product_names = list(self.pivot_data.index)
