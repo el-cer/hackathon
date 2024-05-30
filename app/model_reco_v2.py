@@ -1,7 +1,5 @@
 import pandas as pd 
-from sklearn.decomposition import TruncatedSVD
 import numpy as np
-from sklearn.decomposition import PCA
 
 class Users:
     def __init__(self):

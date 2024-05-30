@@ -1,6 +1,5 @@
 import pandas as pd 
-from sklearn.decomposition import TruncatedSVD
-import numpy as np
+
 
 
 class Users:
