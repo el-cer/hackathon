@@ -10,7 +10,7 @@ class Users:
         self.main_df = self.reco_df[self.reco_df['user_purchases']>=1]
         self.main_df.drop_duplicates(inplace=True)
         groupby_df = self.main_df.groupby('user_id').max('Date_x')['product_id'].reset_index()
-        total_user_id = groupby_df.loc[:10,'user_id']
+        total_user_id = groupby_df.loc[:15,'user_id']
         return total_user_id
 
 
